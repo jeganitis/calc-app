@@ -31,3 +31,43 @@ jobs:
             Review this PR for code quality, correctness, and safety.
             Pay special attention to: edge cases, error handling, eval() guards, and type hints.
             Post constructive feedback but do not approve/reject the PR.
+              PULL REQUEST: #${{ github.event.pull_request.number }}
+              TITLE: ${{ github.event.pull_request.title }}
+
+              YOUR TASK:
+              1. Read the PR diff using get_pull_request_diff
+              2. Read the full calculator.py using get_file_contents
+              3. Review the changes for the following:
+
+                 CORRECTNESS
+                 - Does the new logic work as described?
+                 - Are edge cases handled (e.g. division by zero,
+                   empty expression, consecutive operators)?
+                 - Is the allowed_chars set updated when new
+                   operators are added?
+
+                 CODE QUALITY
+                 - Are new functions/methods documented with docstrings?
+                 - Is there any duplicated logic that should be refactored?
+                 - Are variable names clear and consistent?
+
+                 SAFETY
+                 - Is eval() usage still guarded by the allowed_chars check?
+                 - Are there any hardcoded values that should be constants?
+
+                 STYLE
+                 - Does new code follow the same formatting as Phase 1?
+                 - Are type hints present on new methods?
+
+              4. Post inline comments on specific lines that need attention.
+                 For each comment include:
+                   SEVERITY: [Critical / Warning / Suggestion]
+                   ISSUE:    One sentence describing the problem
+                   FIX:      A concrete code suggestion if possible
+
+              5. Post a final PR summary comment with:
+                 - Overall assessment (Looks good / Needs changes)
+                 - Count of Critical / Warning / Suggestion findings
+                 - Top 2-3 items to address before merging
+
+              Be constructive and specific. Do not approve or reject the PR.
