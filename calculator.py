@@ -1,18 +1,14 @@
-#!/usr/bin/env python3
 """
-Calculator Application - Phase 2
-Supports: addition (+), subtraction (-),
-          multiplication (*), division (/)
+Calculator Application - Phase 1
+Supports: addition (+) and subtraction (-)
 Built with Python tkinter.
-
-This calculator demonstrates sub-agent automation in GitHub Actions.
 """
 
 import tkinter as tk
 
 
 class Calculator:
-    """A simple GUI calculator supporting four basic operations: +, -, *, /."""
+    """A simple GUI calculator supporting + and - operations."""
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -41,15 +37,14 @@ class Calculator:
 
     def _build_buttons(self) -> None:
         """Create the calculator button grid."""
+        # Button layout: label, row, column
         buttons = [
             ("7", 1, 0), ("8", 1, 1), ("9", 1, 2),
             ("4", 2, 0), ("5", 2, 1), ("6", 2, 2),
             ("1", 3, 0), ("2", 3, 1), ("3", 3, 2),
             ("0", 4, 0), (".", 4, 1),
             ("+", 1, 3), ("-", 2, 3),
-            ("*", 3, 3),                        # ← CHANGED: added *
-            ("/", 4, 3),                        # ← CHANGED: added /
-            ("=", 5, 3), ("C", 5, 0), ("⌫", 5, 1),  # ← CHANGED: row 5
+            ("=", 3, 3), ("C", 4, 2), ("⌫", 4, 3),
         ]
         btn_style = {
             "font":   ("Arial", 16),
@@ -67,7 +62,7 @@ class Calculator:
                           "fg": "white"}
 
         for label, row, col in buttons:
-            if label in ("+", "-", "*", "/"):   # ← CHANGED: added *, /
+            if label in ("+", "-"):
                 style = operator_style
             elif label in ("=", "C", "⌫"):
                 style = special_style
@@ -101,14 +96,11 @@ class Calculator:
     def _evaluate(self) -> None:
         """Evaluate the current expression and show the result."""
         try:
-            # Allow +, -, *, / operators (Phase 2)        ← CHANGED
-            allowed_chars = set("0123456789.+-*/")         # ← CHANGED
+            # Only allow +  and  - (Phase 1)
+            allowed_chars = set("0123456789.+-")
             if not all(c in allowed_chars for c in self.expression):
-                raise ValueError("Invalid characters in expression.")
+                raise ValueError("Only + and - are supported in Phase 1.")
             result = eval(self.expression)   # noqa: S307
-            # Format: hide .0 for whole numbers
-            if isinstance(result, float) and result.is_integer():
-                result = int(result)
             self.display_var.set(str(result))
             self.expression = str(result)
         except ZeroDivisionError:
@@ -120,9 +112,8 @@ class Calculator:
 
 
 def main() -> None:
-    """Initialize and run the calculator application."""
     root = tk.Tk()
-    app = Calculator(root)
+    Calculator(root)
     root.mainloop()
 
 
