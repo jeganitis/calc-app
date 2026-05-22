@@ -4,6 +4,8 @@ Calculator Application - Phase 2
 Supports: addition (+), subtraction (-),
           multiplication (*), division (/)
 Built with Python tkinter.
+
+This calculator demonstrates sub-agent automation in GitHub Actions.
 """
 
 import tkinter as tk
