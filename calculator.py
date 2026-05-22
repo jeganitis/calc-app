@@ -12,7 +12,7 @@ import tkinter as tk
 
 
 class Calculator:
-    """A simple GUI calculator supporting +, -, *, / operations."""
+    """A simple GUI calculator supporting four basic operations: +, -, *, /."""
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
