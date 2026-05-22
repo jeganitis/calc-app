@@ -1,6 +1,7 @@
 """
-Calculator Application - Phase 1
-Supports: addition (+) and subtraction (-)
+Calculator Application - Phase 2
+Supports: addition (+), subtraction (-),
+          multiplication (*), division (/)
 Built with Python tkinter.
 """
 
@@ -8,7 +9,7 @@ import tkinter as tk
 
 
 class Calculator:
-    """A simple GUI calculator supporting + and - operations."""
+    """A simple GUI calculator supporting +, -, *, / operations."""
 
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -44,7 +45,9 @@ class Calculator:
             ("1", 3, 0), ("2", 3, 1), ("3", 3, 2),
             ("0", 4, 0), (".", 4, 1),
             ("+", 1, 3), ("-", 2, 3),
-            ("=", 3, 3), ("C", 4, 2), ("⌫", 4, 3),
+            ("*", 3, 3),
+            ("/", 4, 3),
+            ("=", 5, 3), ("C", 5, 0), ("⌫", 5, 1),
         ]
         btn_style = {
             "font":   ("Arial", 16),
@@ -62,7 +65,7 @@ class Calculator:
                           "fg": "white"}
 
         for label, row, col in buttons:
-            if label in ("+", "-"):
+            if label in ("+", "-", "*", "/"):
                 style = operator_style
             elif label in ("=", "C", "⌫"):
                 style = special_style
@@ -96,11 +99,14 @@ class Calculator:
     def _evaluate(self) -> None:
         """Evaluate the current expression and show the result."""
         try:
-            # Only allow +  and  - (Phase 1)
-            allowed_chars = set("0123456789.+-")
+            # Allow +, -, *, / operators (Phase 2)
+            allowed_chars = set("0123456789.+-*/")
             if not all(c in allowed_chars for c in self.expression):
-                raise ValueError("Only + and - are supported in Phase 1.")
+                raise ValueError("Invalid characters in expression.")
             result = eval(self.expression)   # noqa: S307
+            # Format: hide .0 for whole numbers
+            if isinstance(result, float) and result.is_integer():
+                result = int(result)
             self.display_var.set(str(result))
             self.expression = str(result)
         except ZeroDivisionError:
