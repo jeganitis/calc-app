@@ -120,8 +120,9 @@ class Calculator:
 
 
 def main() -> None:
+    """Initialize and run the calculator application."""
     root = tk.Tk()
-    Calculator(root)
+    app = Calculator(root)
     root.mainloop()
 
 
