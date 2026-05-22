@@ -3,7 +3,7 @@ name: Claude Auto Documentation Generator
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "**.py"                    # only runs when Python files change
 
