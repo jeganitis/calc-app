@@ -10,6 +10,7 @@ permissions:
   contents: read
   pull-requests: write             # needed to post review comments
   issues: write
+  id-token: write                  # needed for OIDC authentication
 
 jobs:
   code-review:

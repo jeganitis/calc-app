@@ -10,6 +10,7 @@ on:
 permissions:
   contents: write                 # needed to commit docs back to repo
   pull-requests: read
+  id-token: write                 # needed for OIDC authentication
 
 jobs:
   generate-docs:
