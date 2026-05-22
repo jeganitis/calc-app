@@ -2,15 +2,14 @@ name: Claude PR Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize]   # fires on new PR and new commits
+    types: [opened, synchronize]
     paths:
-      - "**.py"                     # only trigger for Python changes
+      - "**.py"
 
 permissions:
   contents: read
-  pull-requests: write             # needed to post review comments
+  pull-requests: write
   issues: write
-  id-token: write                  # needed for OIDC authentication
 
 jobs:
   code-review:
@@ -21,49 +20,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0           # full history so Claude sees context
+          fetch-depth: 0
 
-      - name: Run Claude Code Review Sub-Agent
+      - name: Run Claude Code Review
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            You are a Python code review agent for the calc-app project — a simple tkinter calculator application.
-
-            PULL REQUEST: #${{ github.event.pull_request.number }}
-            TITLE: ${{ github.event.pull_request.title }}
-
-            YOUR TASK:
-            1. Review the changes in this PR for the following:
-
-               CORRECTNESS
-               - Does the new logic work as described?
-               - Are edge cases handled (e.g. division by zero, empty expression, consecutive operators)?
-               - Is the allowed_chars set updated when new operators are added?
-
-               CODE QUALITY
-               - Are new functions/methods documented with docstrings?
-               - Is there any duplicated logic that should be refactored?
-               - Are variable names clear and consistent?
-
-               SAFETY
-               - Is eval() usage still guarded by the allowed_chars check?
-               - Are there any hardcoded values that should be constants?
-
-               STYLE
-               - Does new code follow the same formatting as Phase 1?
-               - Are type hints present on new methods?
-
-            2. Post inline comments on specific lines that need attention using GitHub's review API.
-               For each comment include:
-                 SEVERITY: [Critical / Warning / Suggestion]
-                 ISSUE:    One sentence describing the problem
-                 FIX:      A concrete code suggestion if possible
-
-            3. Post a summary comment with:
-               - Overall assessment (Looks good / Needs changes)
-               - Count of issues by severity
-               - Top items to address before merging
-
-            Be constructive and specific. Do not approve or reject the PR.
+            Review this PR for code quality, correctness, and safety.
+            Pay special attention to: edge cases, error handling, eval() guards, and type hints.
+            Post constructive feedback but do not approve/reject the PR.
