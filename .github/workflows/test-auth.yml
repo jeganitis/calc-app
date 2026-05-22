@@ -1,0 +1,50 @@
+name: Test Anthropic API Authentication
+
+on:
+  workflow_dispatch  # Manual trigger only
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test-auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test API Key
+        run: |
+          echo "Testing Anthropic API authentication..."
+
+          # Check if API key is set
+          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "ERROR: ANTHROPIC_API_KEY secret is not set"
+            exit 1
+          fi
+
+          echo "✓ API key is configured"
+
+          # Extract the key prefix (first 20 chars)
+          KEY_PREFIX=$(echo "${{ secrets.ANTHROPIC_API_KEY }}" | cut -c1-20)
+          echo "API Key prefix: ${KEY_PREFIX}..."
+
+          # Validate key format (should start with sk-ant-)
+          if [[ "${{ secrets.ANTHROPIC_API_KEY }}" =~ ^sk-ant- ]]; then
+            echo "✓ API key format is valid"
+          else
+            echo "ERROR: API key format is invalid (should start with sk-ant-)"
+            exit 1
+          fi
+
+      - name: Test API connectivity
+        run: |
+          echo "Testing API connectivity..."
+          curl -s https://api.anthropic.com/v1/models \
+            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
+            -H "anthropic-version: 2023-06-01" \
+            | head -20
+        continue-on-error: true
