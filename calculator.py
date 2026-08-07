@@ -1,11 +1,10 @@
 """
 Calculator Application - Phase 3
 Supports: addition (+), subtraction (-),
-          multiplication (*), division (/), modulo (%), square root (√)
+          multiplication (*), division (/), modulo (%)
 Built with Python tkinter.
 """
 
-import math
 import tkinter as tk
 
 
@@ -48,7 +47,7 @@ class Calculator:
             ("+", 1, 3), ("-", 2, 3),
             ("*", 3, 3), ("%", 5, 2),
             ("/", 4, 3),
-            ("=", 5, 3), ("C", 5, 0), ("⌫", 5, 1), ("√", 4, 2),
+            ("=", 5, 3), ("C", 5, 0), ("⌫", 5, 1),
         ]
         btn_style = {
             "font":   ("Arial", 16),
@@ -68,7 +67,7 @@ class Calculator:
         for label, row, col in buttons:
             if label in ("+", "-", "*", "/", "%"):
                 style = operator_style
-            elif label in ("=", "C", "⌫", "√"):
+            elif label in ("=", "C", "⌫"):
                 style = special_style
             else:
                 style = btn_style
@@ -90,38 +89,12 @@ class Calculator:
             self.expression = self.expression[:-1]
             self.display_var.set(self.expression or "0")
 
-        elif label == "√":
-            self._sqrt()
-
         elif label == "=":
             self._evaluate()
 
         else:
             self.expression += label
             self.display_var.set(self.expression)
-
-    def _sqrt(self) -> None:
-        """Calculate the square root of the current expression."""
-        try:
-            allowed_chars = set("0123456789.+-*/%")
-            if not all(c in allowed_chars for c in self.expression):
-                raise ValueError("Invalid characters in expression.")
-            value = eval(self.expression)  # noqa: S307
-            if value < 0:
-                self.display_var.set("Error: Neg√")
-                self.expression = ""
-            else:
-                result = math.sqrt(value)
-                if isinstance(result, float) and result.is_integer():
-                    result = int(result)
-                self.display_var.set(str(result))
-                self.expression = str(result)
-        except ZeroDivisionError:
-            self.display_var.set("Error: Div/0")
-            self.expression = ""
-        except Exception:
-            self.display_var.set("Error")
-            self.expression = ""
 
     def _evaluate(self) -> None:
         """Evaluate the current expression and show the result."""
