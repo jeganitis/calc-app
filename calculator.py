@@ -1,7 +1,7 @@
 """
-Calculator Application - Phase 2
+Calculator Application - Phase 3
 Supports: addition (+), subtraction (-),
-          multiplication (*), division (/)
+          multiplication (*), division (/), modulo (%)
 Built with Python tkinter.
 """
 
@@ -45,7 +45,7 @@ class Calculator:
             ("1", 3, 0), ("2", 3, 1), ("3", 3, 2),
             ("0", 4, 0), (".", 4, 1),
             ("+", 1, 3), ("-", 2, 3),
-            ("*", 3, 3),
+            ("*", 3, 3), ("%", 5, 2),
             ("/", 4, 3),
             ("=", 5, 3), ("C", 5, 0), ("⌫", 5, 1),
         ]
@@ -65,7 +65,7 @@ class Calculator:
                           "fg": "white"}
 
         for label, row, col in buttons:
-            if label in ("+", "-", "*", "/"):
+            if label in ("+", "-", "*", "/", "%"):
                 style = operator_style
             elif label in ("=", "C", "⌫"):
                 style = special_style
@@ -99,8 +99,8 @@ class Calculator:
     def _evaluate(self) -> None:
         """Evaluate the current expression and show the result."""
         try:
-            # Allow +, -, *, / operators (Phase 2)
-            allowed_chars = set("0123456789.+-*/")
+            # Allow +, -, *, /, % operators (Phase 3)
+            allowed_chars = set("0123456789.+-*/%")
             if not all(c in allowed_chars for c in self.expression):
                 raise ValueError("Invalid characters in expression.")
             result = eval(self.expression)   # noqa: S307
